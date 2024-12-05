@@ -3,19 +3,25 @@ import random
 from PyQt6 import QtWidgets, QtGui
 from PyQt6.QtWidgets import QMainWindow
 
+class UI:
+    def __init__(self, main_window):
+        self.main_window = main_window
+        self.init_ui()
+
+    def init_ui(self):
+        self.main_window.setWindowTitle('Circle Drawer')
+        self.main_window.setGeometry(100, 100, 800, 600)
+
+        self.pushButton = QtWidgets.QPushButton('Добавить окружность', self.main_window)
+        self.pushButton.setGeometry(100, 100, 200, 100)
+        self.pushButton.clicked.connect(self.main_window.add_circle)
+
+
 class MyApp(QMainWindow):
     def __init__(self):
         super(MyApp, self).__init__()
         self.circles = []
-        self.init_ui()
-
-    def init_ui(self):
-        self.setWindowTitle('Circle Drawer')
-        self.setGeometry(100, 100, 800, 600)
-
-        self.pushButton = QtWidgets.QPushButton('Добавить окружность', self)
-        self.pushButton.setGeometry(100, 100, 200, 100)
-        self.pushButton.clicked.connect(self.add_circle)
+        self.ui = UI(self)
 
     def add_circle(self):
         diameter = random.randint(20, 100)
@@ -31,8 +37,10 @@ class MyApp(QMainWindow):
             painter.setBrush(color)
             painter.drawEllipse(x, y, diameter, diameter)
 
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MyApp()
     window.show()
     sys.exit(app.exec())
+
